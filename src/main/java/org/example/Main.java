@@ -1,5 +1,10 @@
 package org.example;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 public class Main {
 
     private static void maxValueInt(){
@@ -90,7 +95,33 @@ public class Main {
         sizeArray();
     }
 
+    private static void menuSelectTasks(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int numb = 0;
+
+        System.out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
+                "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
+        System.out.println("2. A console application that will accept any 2 numbers and show which one is larger");
+
+        while (numb < 1 || numb > 6)
+        {
+            System.out.println("Enter task number 1-6: ");
+            try {
+                numb = Integer.parseInt(reader.readLine());
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
+        switch (numb){
+            case 1: maxMinValuesForPrimitives();
+
+            default: maxMinValuesForPrimitives();
+
+        }
+
+    }
+
     public static void main(String[] args) {
-        maxMinValuesForPrimitives();
+        menuSelectTasks();
     }
 }

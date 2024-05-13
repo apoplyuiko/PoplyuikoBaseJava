@@ -3,7 +3,6 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Scanner;
 
 public class Main {
 
@@ -95,6 +94,34 @@ public class Main {
         sizeArray();
     }
 
+    private static void maxMinForInputsValues(){
+        BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+        int numb1;
+        int numb2;
+
+        System.out.print("Enter the first integer: ");
+        try {
+            numb1 = Integer.parseInt(reader.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        System.out.print("Enter the second integer: ");
+        try {
+            numb2 = Integer.parseInt(reader.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(numb1 > numb2) {
+            System.out.printf("The first number is greater than the second: %d > %d", numb1, numb2);
+        } else if (numb1 < numb2) {
+            System.out.printf("The second number is greater than the first: %d > %d", numb2, numb1);
+        }else {
+            System.out.printf("The second number is equals the first: %d = %d", numb1, numb2);
+        }
+    }
+
     private static void menuSelectTasks(){
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         int numb = 0;
@@ -105,7 +132,7 @@ public class Main {
 
         while (numb < 1 || numb > 6)
         {
-            System.out.println("Enter task number 1-6: ");
+            System.out.print("Enter task number 1-6: ");
             try {
                 numb = Integer.parseInt(reader.readLine());
             } catch (IOException e) {
@@ -113,8 +140,14 @@ public class Main {
             }
         }
         switch (numb){
-            case 1: maxMinValuesForPrimitives();
-
+            case 1: {
+                maxMinValuesForPrimitives();
+                break;
+            }
+            case 2: {
+                maxMinForInputsValues();
+                break;
+            }
             default: maxMinValuesForPrimitives();
 
         }

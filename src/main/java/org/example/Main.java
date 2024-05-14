@@ -12,97 +12,29 @@ public class Main {
 
     static BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    private static void maxValueInt() {
-        out.printf("Int max = %d\n", Integer.MAX_VALUE);
-    }
-
-    private static void minValueInt() {
-        out.printf("Int min = %d\n", Integer.MIN_VALUE);
-    }
-
-    private static void maxValueLong() {
-        out.printf("Long max = %d\n", Long.MAX_VALUE);
-    }
-
-    private static void minValueLong() {
-        out.printf("Long min = %d\n", Long.MIN_VALUE);
-    }
-
-    private static void maxValueFloat() {
-        out.println("Float max = " + (Float.MAX_VALUE));
-    }
-
-    private static void minValueFloat() {
-        out.println("Float min = " + (-Float.MAX_VALUE - 1));
-    }
-
-    private static void maxValueDouble() {
-        out.println("Double max = " + (Double.MAX_VALUE));
-    }
-
-    private static void minValueDouble() {
-        out.println("Double max = " + (-Double.MAX_VALUE - 1));
-    }
-
-    private static void minValueChar() {
+    private static void maxMinValuesForPrimitives() {
         out.println("Char min = " + (int) (Character.MIN_VALUE));
-    }
-
-    private static void maxValueChar() {
         out.println("Char max = " + (int) (Character.MAX_VALUE));
-    }
-
-    private static void sizeBoolean() {
         out.println("In Java, boolean is a separate variable. " +
                 "This is not an analogue of 1 or 0, as, for example, in JavaScript and PHP.");
         out.println("Example boolean variables: " + Boolean.FALSE + " and " + Boolean.TRUE);
-    }
-
-    private static void maxValueByte() {
-        out.println("Byte max = " + (Byte.MAX_VALUE));
-    }
-
-    private static void minValueByte() {
         out.println("Byte min = " + (Byte.MIN_VALUE));
-    }
-
-    private static void maxValueShort() {
-        out.println("Short max = " + (Short.MAX_VALUE));
-    }
-
-    private static void minValueShort() {
+        out.println("Byte max = " + (Byte.MAX_VALUE));
         out.println("Short min = " + (Short.MIN_VALUE));
-    }
-
-    private static void sizeString() {
+        out.println("Short max = " + (Short.MAX_VALUE));
+        out.printf("Int max = %d\n", Integer.MAX_VALUE);
+        out.printf("Int min = %d\n", Integer.MIN_VALUE);
+        out.printf("Long min = %d\n", Long.MIN_VALUE);
+        out.printf("Long max = %d\n", Long.MAX_VALUE);
+        out.println("Float min = " + (-Float.MAX_VALUE - 1));
+        out.println("Float max = " + (Float.MAX_VALUE));
+        out.println("Double max = " + (-Double.MAX_VALUE - 1));
+        out.println("Double max = " + (Double.MAX_VALUE));
         out.println("String length from 0 to " + Integer.MAX_VALUE + " characters");
-    }
-
-    private static void sizeArray() {
         int[] array = {1, 2, 3, 4, 5, 6, 6, 8};
         out.println("Elements in Array can be stored in a list or set at most " + Integer.MAX_VALUE);
         out.println("Array example: " + Arrays.toString(array));
         out.println("Array length: " + array.length);
-    }
-
-    private static void maxMinValuesForPrimitives() {
-        minValueChar();
-        maxValueChar();
-        sizeBoolean();
-        minValueByte();
-        maxValueByte();
-        minValueShort();
-        maxValueShort();
-        minValueInt();
-        maxValueInt();
-        minValueLong();
-        maxValueLong();
-        minValueFloat();
-        maxValueFloat();
-        minValueDouble();
-        maxValueDouble();
-        sizeString();
-        sizeArray();
     }
 
     private static void maxMinForInputsValues() {

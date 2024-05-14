@@ -3,7 +3,9 @@ package org.example;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 import static java.lang.System.exit;
 import static java.lang.System.in;
@@ -166,6 +168,51 @@ public class Main {
         } while (numberProduct >= 1);
     }
 
+    private static void shopping() {
+        List<String> list = new ArrayList<>();
+        int numb = -1;
+        while (numb != 0) {
+            out.println();
+            out.println("0. Call menu");
+            out.println("1. Show cart");
+            out.println("2. Add product to cart");
+            out.println("3. Empty cart");
+            numb = selectFromRange(0, 3);
+            if (numb == 0) {
+                subMenu(4);
+            } else if (numb == 1) {
+                showCart(list);
+            } else if (numb == 2) {
+                addProductToCart(list);
+            } else if (numb == 3) {
+                list.clear();
+            }
+        }
+    }
+
+    private static void addProductToCart(List<String> list) {
+        out.println("The product's name:");
+        String product;
+        try {
+            product = reader.readLine();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        list.add(product);
+    }
+
+    private static void showCart(List<String> list) {
+        out.println();
+        if (list.size() == 0) {
+            out.println("Cart is empty");
+        } else {
+            out.print("Products name:\n");
+            for (String item : list) {
+                out.println(item);
+            }
+        }
+    }
+
     private static void initBasket() {
         Arrays.fill(countProduct, 0);
         for (int j = 0; j < n; j++) {
@@ -191,12 +238,14 @@ public class Main {
     private static void menuSelectTasks(int i) {
         int numb = i;
         if (numb == -1) {
+            out.println();
             out.println("0. Exit.");
             out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
                     "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
             out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
             out.println("3. Prime numbers from the interval.");
             out.println("4. Shopping basket.");
+            out.println("5. Shopping basket - with collection.");
             numb = selectFromRange(0, 5);
         }
         switch (numb) {
@@ -208,6 +257,8 @@ public class Main {
                 initBasket();
                 shoppingBasket();
             }
+            case 5 -> shopping();
+
             default -> out.println("Oops, something wrong !");
         }
     }

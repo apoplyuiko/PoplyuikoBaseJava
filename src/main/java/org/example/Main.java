@@ -5,12 +5,19 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Arrays;
 
+import static java.lang.System.exit;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
 public class Main {
 
     static BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+
+    static int n = 9;
+
+    static int[] countProduct = new int[n];
+
+    static String[] basket = new String[n];
 
     private static void maxMinValuesForPrimitives() {
         out.println("Char min = " + (int) (Character.MIN_VALUE));
@@ -35,6 +42,7 @@ public class Main {
         out.println("Elements in Array can be stored in a list or set at most " + Integer.MAX_VALUE);
         out.println("Array example: " + Arrays.toString(array));
         out.println("Array length: " + array.length);
+        subMenu(1);
     }
 
     private static void maxMinForInputsValues() {
@@ -67,6 +75,7 @@ public class Main {
         } else {
             out.printf("The second number is equals the first: %d = %d", numb1, numb2);
         }
+        subMenu(2);
     }
 
     private static boolean isPrime(int number) {
@@ -108,32 +117,102 @@ public class Main {
                 out.printf("%d ", i);
             }
         }
+        subMenu(3);
     }
 
-    private static void menuSelectTasks() {
-        out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
-                "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
-        out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
-        out.println("3. Prime numbers from the interval.");
+    private static void printProducts() {
+        out.println();
+        out.println("product list (To select, enter the product number):");
+        for (int i = 0; i < n; i++) {
+            var str = countProduct[i] <= 0 ? "" : " (" + countProduct[i] + ")";
+            var temp = ((i + 1) % 3 != 0) ? " " : "\n";
+            out.print((i + 1) + "." + basket[i] + str + temp);
+        }
+    }
+
+    private static int selectFromRange(int a, int b) {
         int numb = 0;
         do {
-            out.print("Enter task number 1-6: ");
+            out.printf("Enter task number %d-%d: ", a, b);
             try {
                 numb = Integer.parseInt(reader.readLine());
             } catch (NumberFormatException | IOException e) {
-                out.print("Enter task number 1-6: ");
+                out.printf("Enter task number %d-%d: ", a, b);
             }
-        } while (numb < 1 || numb > 6);
+        } while (numb < a || numb > b);
+        return numb;
+    }
+
+    private static void shoppingBasket() {
+        var numberProduct = 0;
+        do {
+            printProducts();
+            out.println("0. call menu");
+            numberProduct = selectFromRange(0, n);
+            numberProduct--;
+            if (numberProduct == -1) {
+                subMenu(4);
+            }
+            var temp = countProduct[numberProduct] <= 0 ? "" : "3. Remove from cart\n";
+            out.println("1. Add to Basket\n2. To the selection of goods\n" + temp);
+            var b = countProduct[numberProduct] <= 0 ? 2 : 3;
+            var actionNumber = selectFromRange(1, b);
+            if (actionNumber == 1) {
+                var count = selectFromRange(1, 100);
+                countProduct[numberProduct] = count;
+            } else if (actionNumber == 3) {
+                countProduct[numberProduct] = 0;
+            }
+        } while (numberProduct >= 1);
+    }
+
+    private static void initBasket() {
+        Arrays.fill(countProduct, 0);
+        for (int j = 0; j < n; j++) {
+            basket[j] = "Product " + (j + 1);
+        }
+    }
+
+    private static void subMenu(int i) {
+        out.println();
+        out.println("0. Exit.");
+        out.println("1. Return to main menu.");
+        out.println("2. Repeat the operation.");
+        var numb = selectFromRange(0, 2);
 
         switch (numb) {
+            case 0 -> exit(0);
+            case 1 -> menuSelectTasks(-1);
+            case 2 -> menuSelectTasks(i);
+            default -> out.println("Oops, something wrong !");
+        }
+    }
+
+    private static void menuSelectTasks(int i) {
+        int numb = i;
+        if (numb == -1) {
+            out.println("0. Exit.");
+            out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
+                    "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
+            out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
+            out.println("3. Prime numbers from the interval.");
+            out.println("4. Shopping basket.");
+            numb = selectFromRange(0, 5);
+        }
+        switch (numb) {
+            case 0 -> exit(0);
             case 1 -> maxMinValuesForPrimitives();
             case 2 -> maxMinForInputsValues();
             case 3 -> primeNumbersFromInterval();
+            case 4 -> {
+                initBasket();
+                shoppingBasket();
+            }
             default -> out.println("Oops, something wrong !");
         }
     }
 
     public static void main(String[] args) {
-        menuSelectTasks();
+        menuSelectTasks(-1);
     }
 }

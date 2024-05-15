@@ -15,12 +15,6 @@ public class Main {
 
     static BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    static int n = 9;
-
-    static int[] countProduct = new int[n];
-
-    static String[] basket = new String[n];
-
     private static void maxMinValuesForPrimitives() {
         out.println("Char min = " + (int) (Character.MIN_VALUE));
         out.println("Char max = " + (int) (Character.MAX_VALUE));
@@ -71,11 +65,11 @@ public class Main {
             }
         }
         if (numb1 > numb2) {
-            out.printf("The first number is greater than the second: %d > %d", numb1, numb2);
+            out.printf("\nThe first number is greater than the second: %d > %d", numb1, numb2);
         } else if (numb1 < numb2) {
-            out.printf("The second number is greater than the first: %d > %d", numb2, numb1);
+            out.printf("\nThe second number is greater than the first: %d > %d", numb2, numb1);
         } else {
-            out.printf("The second number is equals the first: %d = %d", numb1, numb2);
+            out.printf("\nThe second number is equals the first: %d = %d", numb1, numb2);
         }
         subMenu(2);
     }
@@ -84,7 +78,6 @@ public class Main {
         int j;
         boolean isPrime;
         isPrime = true;
-        // проверить, делится ли число без остатка
         for (j = 2; j <= number / j; j++) {
             if ((number % j) == 0) {
                 isPrime = false;
@@ -94,8 +87,8 @@ public class Main {
     }
 
     private static void primeNumbersFromInterval() {
-        int a = -1;
-        int b = -1;
+        int a = 0;
+        int b = 0;
 
         do {
             out.print("Enter the first integer: ");
@@ -104,7 +97,7 @@ public class Main {
             } catch (NumberFormatException | IOException e) {
                 out.print("Enter the first integer: ");
             }
-        } while (a < 0);
+        } while (a <= 0);
         do {
             out.print("Enter the second integer: ");
             try {
@@ -122,148 +115,118 @@ public class Main {
         subMenu(3);
     }
 
-    private static void printProducts() {
-        out.println();
-        out.println("product list (To select, enter the product number):");
-        for (int i = 0; i < n; i++) {
-            var str = countProduct[i] <= 0 ? "" : " (" + countProduct[i] + ")";
-            var temp = ((i + 1) % 3 != 0) ? " " : "\n";
-            out.print((i + 1) + "." + basket[i] + str + temp);
-        }
-    }
-
-    private static int selectFromRange(int a, int b) {
+    private static int selectFromRange(int b) {
         int numb = 0;
         do {
-            out.printf("Enter task number %d-%d: ", a, b);
+            out.printf("\nEnter task number %d-%d: ", 0, b);
             try {
                 numb = Integer.parseInt(reader.readLine());
             } catch (NumberFormatException | IOException e) {
-                out.printf("Enter task number %d-%d: ", a, b);
+                out.printf("\nEnter task number %d-%d: ", 0, b);
             }
-        } while (numb < a || numb > b);
+        } while (numb < 0 || numb > b);
         return numb;
-    }
-
-    private static void shoppingBasket() {
-        var numberProduct = 0;
-        do {
-            printProducts();
-            out.println("0. call menu");
-            numberProduct = selectFromRange(0, n);
-            numberProduct--;
-            if (numberProduct == -1) {
-                subMenu(4);
-            }
-            var temp = countProduct[numberProduct] <= 0 ? "" : "3. Remove from cart\n";
-            out.println("1. Add to Basket\n2. To the selection of goods\n" + temp);
-            var b = countProduct[numberProduct] <= 0 ? 2 : 3;
-            var actionNumber = selectFromRange(1, b);
-            if (actionNumber == 1) {
-                var count = selectFromRange(1, 100);
-                countProduct[numberProduct] = count;
-            } else if (actionNumber == 3) {
-                countProduct[numberProduct] = 0;
-            }
-        } while (numberProduct >= 1);
     }
 
     private static void shopping() {
         List<String> list = new ArrayList<>();
-        int numb = -1;
-        while (numb != 0) {
-            out.println();
-            out.println("0. Call menu");
+        do {
+            out.println("\n0. Call menu");
             out.println("1. Show cart");
             out.println("2. Add product to cart");
             out.println("3. Empty cart");
-            numb = selectFromRange(0, 3);
-            if (numb == 0) {
-                subMenu(4);
-            } else if (numb == 1) {
-                showCart(list);
-            } else if (numb == 2) {
-                addProductToCart(list);
-            } else if (numb == 3) {
-                list.clear();
+            var numb = selectFromRange(3);
+            switch (numb) {
+                case 0 -> subMenu(4);
+                case 1 -> showCart(list);
+                case 2 -> addProductToCart(list);
+                default -> list.clear();
             }
-        }
+        } while (true);
     }
 
     private static void addProductToCart(List<String> list) {
         out.println("The product's name:");
         String product;
-        try {
-            product = reader.readLine();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        list.add(product);
+        do {
+            try {
+                product = reader.readLine();
+                list.add(product);
+                break;
+            } catch (IOException e) {
+                out.print("Enter the product name without special characters!\n");
+            }
+        } while (true);
     }
 
     private static void showCart(List<String> list) {
-        out.println();
-        if (list.size() == 0) {
-            out.println("Cart is empty");
+        if (list.isEmpty()) {
+            out.println("\nCart is empty");
         } else {
-            out.print("Products name:\n");
+            out.print("\nProducts name:\n");
             for (String item : list) {
                 out.println(item);
             }
         }
     }
 
-    private static void initBasket() {
-        Arrays.fill(countProduct, 0);
-        for (int j = 0; j < n; j++) {
-            basket[j] = "Product " + (j + 1);
-        }
-    }
-
     private static void subMenu(int i) {
-        out.println();
-        out.println("0. Exit.");
+        out.println("\n0. Exit.");
         out.println("1. Return to main menu.");
         out.println("2. Repeat the operation.");
-        var numb = selectFromRange(0, 2);
+        var numb = selectFromRange(2);
 
         switch (numb) {
             case 0 -> exit(0);
-            case 1 -> menuSelectTasks(-1);
+            case 1 -> menuSelectTasks();
             case 2 -> menuSelectTasks(i);
             default -> out.println("Oops, something wrong !");
         }
     }
 
+    private static void menuSelectTasks() {
+
+        out.println("\n0. Exit.");
+        out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
+                "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
+        out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
+        out.println("3. Prime numbers from the interval.");
+        out.println("4. Shopping basket.");
+        var numb = selectFromRange(4);
+        menuSelectTasks(numb);
+    }
+
     private static void menuSelectTasks(int i) {
-        int numb = i;
-        if (numb == -1) {
-            out.println();
-            out.println("0. Exit.");
-            out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
-                    "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
-            out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
-            out.println("3. Prime numbers from the interval.");
-            out.println("4. Shopping basket.");
-            out.println("5. Shopping basket - with collection.");
-            numb = selectFromRange(0, 5);
-        }
-        switch (numb) {
+        switch (i) {
             case 0 -> exit(0);
             case 1 -> maxMinValuesForPrimitives();
             case 2 -> maxMinForInputsValues();
             case 3 -> primeNumbersFromInterval();
-            case 4 -> {
-                initBasket();
-                shoppingBasket();
-            }
-            case 5 -> shopping();
-
+            case 4 -> shopping();
             default -> out.println("Oops, something wrong !");
         }
     }
 
+    private static void passwordRequest() {
+        String password = "Dunice!";
+        String readPassword = "";
+        while (true) {
+            out.println("Enter password!");
+            try {
+                readPassword = reader.readLine();
+            } catch (IOException e) {
+                out.println("Password is not correct!");
+            }
+            if (password.equals(readPassword)) {
+                out.println("Password entered");
+                break;
+            }
+            out.println("Password is not correct!");
+        }
+    }
+
     public static void main(String[] args) {
-        menuSelectTasks(-1);
+        passwordRequest();
+        menuSelectTasks();
     }
 }

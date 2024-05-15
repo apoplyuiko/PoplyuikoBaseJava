@@ -13,7 +13,7 @@ import static java.lang.System.out;
 
 public class Main {
 
-    static BufferedReader reader = new BufferedReader(new InputStreamReader(in));
+    private static final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
     private static void maxMinValuesForPrimitives() {
         out.println("Char min = " + (int) (Character.MIN_VALUE));
@@ -128,9 +128,9 @@ public class Main {
         return numb;
     }
 
-    private static void shopping() {
+    private static void fillYouCart() {
         List<String> list = new ArrayList<>();
-        do {
+        while (true) {
             out.println("\n0. Call menu");
             out.println("1. Show cart");
             out.println("2. Add product to cart");
@@ -142,7 +142,7 @@ public class Main {
                 case 2 -> addProductToCart(list);
                 default -> list.clear();
             }
-        } while (true);
+        }
     }
 
     private static void addProductToCart(List<String> list) {
@@ -179,13 +179,21 @@ public class Main {
         switch (numb) {
             case 0 -> exit(0);
             case 1 -> menuSelectTasks();
-            case 2 -> menuSelectTasks(i);
+            case 2 -> {
+                switch (i) {
+                    case 0 -> exit(0);
+                    case 1 -> maxMinValuesForPrimitives();
+                    case 2 -> maxMinForInputsValues();
+                    case 3 -> primeNumbersFromInterval();
+                    case 4 -> fillYouCart();
+                    default -> out.println("Oops, something wrong !");
+                }
+            }
             default -> out.println("Oops, something wrong !");
         }
     }
 
     private static void menuSelectTasks() {
-
         out.println("\n0. Exit.");
         out.println("1. Print variables to the console (maximum and minimum values for primitives). \n" +
                 "Expected variables are char, boolean, byte, short, int, long, float, double, String, Array.");
@@ -193,16 +201,12 @@ public class Main {
         out.println("3. Prime numbers from the interval.");
         out.println("4. Shopping basket.");
         var numb = selectFromRange(4);
-        menuSelectTasks(numb);
-    }
-
-    private static void menuSelectTasks(int i) {
-        switch (i) {
+        switch (numb) {
             case 0 -> exit(0);
             case 1 -> maxMinValuesForPrimitives();
             case 2 -> maxMinForInputsValues();
             case 3 -> primeNumbersFromInterval();
-            case 4 -> shopping();
+            case 4 -> fillYouCart();
             default -> out.println("Oops, something wrong !");
         }
     }

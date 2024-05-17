@@ -7,74 +7,53 @@ import java.io.InputStreamReader;
 import static java.lang.System.in;
 import static java.lang.System.out;
 
-public enum Menu {
-    exit(true, "Exit"),
-    powerOn(true, "Power-On"),
-    powerOff(false, "Power-Off"),
-    addWater(false, "Add water"),
-    addCoffee(false, "Add coffee"),
-    addMilk(false, "Add milk"),
-    clearMachine(false, "Clear machine"),
-    numberOfBrews(false, "Number of brews"),
-    checkIngredients(false, "Check ingredients");
-
+public class Menu {
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
-    public boolean visibility;
-
-    public final String text;
-
-    Menu(boolean visibility, String text) {
-        this.visibility = visibility;
-        this.text = text;
-    }
-
-    static void setVisibilityPowerOff() {
-        exit.visibility = true;
-        powerOn.visibility = true;
-        powerOff.visibility = false;
-        addWater.visibility = false;
-        addCoffee.visibility = false;
-        addMilk.visibility = false;
-        clearMachine.visibility = false;
-        numberOfBrews.visibility = false;
-        checkIngredients.visibility = false;
-    }
-
-    static void setVisibilityPowerOn() {
-        exit.visibility = true;
-        powerOn.visibility = false;
-        powerOff.visibility = true;
-        addWater.visibility = true;
-        addCoffee.visibility = true;
-        addMilk.visibility = true;
-        clearMachine.visibility = true;
-        numberOfBrews.visibility = true;
-        checkIngredients.visibility = true;
-    }
-
-    private static int selectFromRange(int endInterval) {
-        int selectItem = 0;
+    private static int requestConsole(String s) {
+        int count;
         do {
-            out.printf("\nEnter item number %d-%d: ", 0, endInterval);
+            out.print(s);
             try {
-                selectItem = Integer.parseInt(reader.readLine());
+                count = Integer.parseInt(reader.readLine());
+                break;
             } catch (NumberFormatException | IOException e) {
-                out.printf("\nEnter item number %d-%d: ", 0, endInterval);
+                out.print(s);
             }
-        } while (selectItem < 0 || selectItem > endInterval);
-        return selectItem;
+        } while (true);
+        return count;
     }
 
-    static int showMenu() {
-        Menu[] menu = values();
+    private static MenuItems choiceItem(int endInterval, MenuItems[] menu) {
+        int selectItem = requestConsole("\nEnter item number 0-" + endInterval + ": ");
+        return menu[selectItem];
+    }
+
+    public static MenuItems showMenu(boolean statusPower) {
+        MenuItems[] menu = MenuItems.values();
         int countItem = 0;
-        for (Menu item : menu) {
-            if (item.visibility) {
-                out.printf("%d. " + item.text + "\t", countItem);
-                countItem++;
+        out.print("\n");
+        for (MenuItems item : menu) {
+            if (countItem == 2 && !statusPower) {
+                break;
             }
+            if (countItem == 2) {
+                out.print("Service:\n");
+            }
+            if (countItem == 4) {
+                out.print("Add ingredients:\n");
+            }
+            if (countItem == 7) {
+                out.print("Prepare:\n");
+            }
+            if (countItem == 16) {
+                out.print("Show recipe:\n");
+            }
+            out.printf("%d) " + item.text + "\n", countItem);
+            countItem++;
         }
-        return selectFromRange(countItem - 1);
+        out.print("\n");
+        return choiceItem(countItem - 1, menu);
     }
 }
+

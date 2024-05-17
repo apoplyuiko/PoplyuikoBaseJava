@@ -15,6 +15,12 @@ public class Task1 {
 
     private static final BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
+    private static final String ENTER_FIRST_NUMBER = "Enter the first Number";
+
+    private static final String ENTER_SECOND_NUMBER = "Enter the second Number";
+
+    private static final String ENTER_TASK_NUMBER = "Enter First Number";
+
     private static void maxMinValuesForPrimitives() {
         out.println("Char min = " + (int) (Character.MIN_VALUE));
         out.println("Char max = " + (int) (Character.MAX_VALUE));
@@ -41,27 +47,23 @@ public class Task1 {
         menuSelectTasks();
     }
 
+    private static int inputNumber(String input) {
+        int inputNumber;
+        out.print(input);
+        while (true) {
+            try {
+                inputNumber = Integer.parseInt(reader.readLine());
+                break;
+            } catch (NumberFormatException | IOException e) {
+                out.print(input);
+            }
+        }
+        return inputNumber;
+    }
+
     private static void maxMinForInputsValues() {
-        int firstNumber;
-        out.print("Enter the first integer: ");
-        while (true) {
-            try {
-                firstNumber = Integer.parseInt(reader.readLine());
-                break;
-            } catch (NumberFormatException | IOException e) {
-                out.print("Enter the first integer: ");
-            }
-        }
-        int secondNumber;
-        out.print("Enter the second integer: ");
-        while (true) {
-            try {
-                secondNumber = Integer.parseInt(reader.readLine());
-                break;
-            } catch (NumberFormatException | IOException e) {
-                out.print("Enter the second integer: ");
-            }
-        }
+        int firstNumber = inputNumber(ENTER_FIRST_NUMBER);
+        int secondNumber = inputNumber(ENTER_SECOND_NUMBER);
         if (firstNumber > secondNumber) {
             out.printf("\nThe first number is greater than the second: %d > %d", firstNumber, secondNumber);
         } else if (firstNumber < secondNumber) {
@@ -85,46 +87,16 @@ public class Task1 {
     }
 
     private static void primeNumbersFromInterval() {
-        int a = 0;
-        int b = 0;
-
-        do {
-            out.print("Enter the first integer: ");
-            try {
-                a = Integer.parseInt(reader.readLine());
-            } catch (NumberFormatException | IOException e) {
-                out.print("Enter the first integer: ");
-            }
-        } while (a <= 0);
-        do {
-            out.print("Enter the second integer: ");
-            try {
-                b = Integer.parseInt(reader.readLine());
-            } catch (NumberFormatException | IOException e) {
-                out.print("Enter the second integer: ");
-            }
-        } while (b < a);
+        int a = inputNumber(ENTER_FIRST_NUMBER);
+        int b = inputNumber(ENTER_SECOND_NUMBER);
         out.println("Result:");
+        b = Math.max(a, b);
         for (var i = 1; i <= b; i += 2) {
             if (isPrime(i) && i >= a) {
                 out.printf("%d ", i);
             }
         }
         menuSelectTasks();
-    }
-
-    private static int selectFromRange() {
-        int selectItem;
-        do {
-            out.print("\nEnter task number: ");
-            try {
-                selectItem = Integer.parseInt(reader.readLine());
-                break;
-            } catch (NumberFormatException | IOException e) {
-                out.print("\nEnter task number: ");
-            }
-        } while (true);
-        return selectItem;
     }
 
     private static void fillYouCart() {
@@ -134,7 +106,7 @@ public class Task1 {
             out.println("1. Show cart");
             out.println("2. Add product to cart");
             out.println("3. Clear cart");
-            var selectItem = selectFromRange();
+            var selectItem = inputNumber(ENTER_TASK_NUMBER);
             switch (selectItem) {
                 case 0 -> menuSelectTasks();
                 case 1 -> showCart(list);
@@ -180,7 +152,7 @@ public class Task1 {
         out.println("2. A console application that will accept any 2 numbers and show which one is larger.");
         out.println("3. Prime numbers from the interval.");
         out.println("4. Shopping basket.");
-        var selectItem = selectFromRange();
+        var selectItem = inputNumber(ENTER_TASK_NUMBER);
         switch (selectItem) {
             case 0 -> exit(0);
             case 1 -> maxMinValuesForPrimitives();

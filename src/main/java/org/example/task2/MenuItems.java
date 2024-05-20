@@ -2,7 +2,7 @@ package org.example.task2;
 
 public enum MenuItems {
     exit("Exit"),
-    powerOn("Power On/Off"),
+    powerOn("On/Off"),
     numberOfBrews("Number of brews"),
     clearMachine("Clear machine"),
     addWater("Water"),
@@ -11,15 +11,17 @@ public enum MenuItems {
     prepareCappuccino("Cappuccino"),
     prepareAmericano("Americano"),
     prepareEspresso("Espresso"),
-    threePrepareCappuccino("3 Cappuccinos"),
-    threePrepareAmericano("3 Americanos"),
-    threePrepareEspresso("3 Espressos"),
+    threePrepareCappuccino("3 Cappuccino"),
+    threePrepareAmericano("3 Americano"),
+    threePrepareEspresso("3 Espresso"),
     prepareAnyCappuccino("Any quantity Cappuccino"),
     prepareAnyAmericano("Any quantity Americano"),
     prepareAnyEspresso("Any quantity Espresso"),
     showCappuccino("Cappuccino"),
     showAmericano("Americano"),
-    showEspresso("Espresso");
+    showEspresso("Espresso"),
+    showLog("Show log"),
+    createProfile("Create profile");
     public final String text;
 
     MenuItems(String text) {

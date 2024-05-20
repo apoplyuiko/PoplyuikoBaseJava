@@ -26,7 +26,7 @@ public class Task2 {
             }
             switch (event) {
                 case EXIT -> exit(0);
-                case NUMBER_OF_BREWS -> coffeeMachine.printNumberOfBrews();
+                case NUMBER_OF_BREWS -> coffeeMachine.printCountPrepared();
                 case CLEAR_MACHINE -> coffeeMachine.clearMachine();
                 case ADD_WATER -> coffeeMachine.addWater("water");
                 case ADD_COFFEE -> coffeeMachine.addCoffee("coffee");

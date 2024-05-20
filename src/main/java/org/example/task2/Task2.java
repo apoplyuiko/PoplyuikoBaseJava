@@ -2,10 +2,9 @@ package org.example.task2;
 
 import static java.lang.System.exit;
 import static java.lang.System.out;
-import static org.example.task2.MenuItems.powerOn;
-import static org.example.task2.MenuItems.prepareAnyAmericano;
-import static org.example.task2.MenuItems.prepareAnyCappuccino;
-import static org.example.task2.MenuItems.prepareAnyEspresso;
+import static org.example.task2.MenuItems.PREPARE_ANY_AMERICANO;
+import static org.example.task2.MenuItems.PREPARE_ANY_CAPPUCCINO;
+import static org.example.task2.MenuItems.PREPARE_ANY_ESPRESSO;
 import static org.example.task2.Recipes.AMERICANO;
 import static org.example.task2.Recipes.CAPPUCCINO;
 import static org.example.task2.Recipes.ESPRESSO;
@@ -22,31 +21,28 @@ public class Task2 {
             coffeeMachine.printHealthMachine();
             coffeeMachine.showMenu();
             event = coffeeMachine.choiceItem();
-            if (event == prepareAnyCappuccino || event == prepareAnyEspresso || event == prepareAnyAmericano) {
+            if (event == PREPARE_ANY_CAPPUCCINO || event == PREPARE_ANY_ESPRESSO || event == PREPARE_ANY_AMERICANO) {
                 count = coffeeMachine.countRequest();
             }
-            if (event == null) {
-                continue;
-            }
             switch (event) {
-                case exit -> exit(0);
-                case numberOfBrews -> coffeeMachine.printNumberOfBrews();
-                case clearMachine -> coffeeMachine.clearMachine();
-                case addWater -> coffeeMachine.addWater("water");
-                case addCoffee -> coffeeMachine.addCoffee("coffee");
-                case addMilk -> coffeeMachine.addMilk("milk");
-                case prepareCappuccino, prepareAnyCappuccino -> coffeeMachine.prepareCoffee(CAPPUCCINO, count);
-                case prepareAmericano, prepareAnyAmericano -> coffeeMachine.prepareCoffee(AMERICANO, count);
-                case prepareEspresso, prepareAnyEspresso -> coffeeMachine.prepareCoffee(ESPRESSO, count);
-                case threePrepareCappuccino -> coffeeMachine.prepareCoffee(CAPPUCCINO, countThree);
-                case threePrepareAmericano -> coffeeMachine.prepareCoffee(AMERICANO, countThree);
-                case threePrepareEspresso -> coffeeMachine.prepareCoffee(ESPRESSO, countThree);
-                case showCappuccino -> coffeeMachine.printRecipe(CAPPUCCINO);
-                case showAmericano -> coffeeMachine.printRecipe(AMERICANO);
-                case showEspresso -> coffeeMachine.printRecipe(ESPRESSO);
-                case showLog -> coffeeMachine.showLogPrepare();
-                case powerOn -> coffeeMachine.setStatus(!coffeeMachine.getStatus());
-                case createProfile -> coffeeMachine.createProfiles();
+                case EXIT -> exit(0);
+                case NUMBER_OF_BREWS -> coffeeMachine.printNumberOfBrews();
+                case CLEAR_MACHINE -> coffeeMachine.clearMachine();
+                case ADD_WATER -> coffeeMachine.addWater("water");
+                case ADD_COFFEE -> coffeeMachine.addCoffee("coffee");
+                case ADD_MILK -> coffeeMachine.addMilk("milk");
+                case PREPARE_CAPPUCCINO, PREPARE_ANY_CAPPUCCINO -> coffeeMachine.prepareCoffee(CAPPUCCINO, count);
+                case PREPARE_AMERICANO, PREPARE_ANY_AMERICANO -> coffeeMachine.prepareCoffee(AMERICANO, count);
+                case PREPARE_ESPRESSO, PREPARE_ANY_ESPRESSO -> coffeeMachine.prepareCoffee(ESPRESSO, count);
+                case THREE_PREPARE_CAPPUCCINO -> coffeeMachine.prepareCoffee(CAPPUCCINO, countThree);
+                case THREE_PREPARE_AMERICANO -> coffeeMachine.prepareCoffee(AMERICANO, countThree);
+                case THREE_PREPARE_ESPRESSO -> coffeeMachine.prepareCoffee(ESPRESSO, countThree);
+                case SHOW_CAPPUCCINO -> coffeeMachine.printRecipe(CAPPUCCINO);
+                case SHOW_AMERICANO -> coffeeMachine.printRecipe(AMERICANO);
+                case SHOW_ESPRESSO -> coffeeMachine.printRecipe(ESPRESSO);
+                case SHOW_LOG -> coffeeMachine.showLogPrepare();
+                case POWER_ON -> coffeeMachine.setStatus(!coffeeMachine.getStatus());
+                case PROFILES -> coffeeMachine.menuProfile();
                 default -> out.println("Oops, something wrong!");
             }
         }

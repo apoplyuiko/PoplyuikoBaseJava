@@ -8,21 +8,21 @@ import java.util.List;
 
 import static java.lang.System.in;
 import static java.lang.System.out;
-import static org.example.task2.MenuItems.addCoffee;
-import static org.example.task2.MenuItems.addMilk;
-import static org.example.task2.MenuItems.addWater;
-import static org.example.task2.MenuItems.clearMachine;
-import static org.example.task2.MenuItems.createProfile;
-import static org.example.task2.MenuItems.exit;
-import static org.example.task2.MenuItems.numberOfBrews;
-import static org.example.task2.MenuItems.powerOn;
-import static org.example.task2.MenuItems.prepareAmericano;
-import static org.example.task2.MenuItems.prepareCappuccino;
-import static org.example.task2.MenuItems.prepareEspresso;
-import static org.example.task2.MenuItems.showAmericano;
-import static org.example.task2.MenuItems.showCappuccino;
-import static org.example.task2.MenuItems.showEspresso;
-import static org.example.task2.MenuItems.showLog;
+import static org.example.task2.MenuItems.ADD_COFFEE;
+import static org.example.task2.MenuItems.ADD_MILK;
+import static org.example.task2.MenuItems.ADD_WATER;
+import static org.example.task2.MenuItems.CLEAR_MACHINE;
+import static org.example.task2.MenuItems.PROFILES;
+import static org.example.task2.MenuItems.EXIT;
+import static org.example.task2.MenuItems.NUMBER_OF_BREWS;
+import static org.example.task2.MenuItems.POWER_ON;
+import static org.example.task2.MenuItems.PREPARE_AMERICANO;
+import static org.example.task2.MenuItems.PREPARE_CAPPUCCINO;
+import static org.example.task2.MenuItems.PREPARE_ESPRESSO;
+import static org.example.task2.MenuItems.SHOW_AMERICANO;
+import static org.example.task2.MenuItems.SHOW_CAPPUCCINO;
+import static org.example.task2.MenuItems.SHOW_ESPRESSO;
+import static org.example.task2.MenuItems.SHOW_LOG;
 import static org.example.task2.MenuItems.values;
 import static org.example.task2.Recipes.AMERICANO;
 import static org.example.task2.Recipes.CAPPUCCINO;
@@ -37,13 +37,13 @@ public class CoffeeMachine {
 
     private List<Profiles> profiles = new ArrayList<>();
 
-    private int menuLength;
+    private final int menuLength = 20;
 
-    private int maxLevel;
+    private final int maxLevel = 100;
+
+    private final int maxPrepared = 10;
 
     private boolean statusWaste;
-
-    private int maxPrepared;
 
     private int milk;
 
@@ -64,14 +64,11 @@ public class CoffeeMachine {
         water = 92;
         coffee = 93;
         milk = 99;
-        setMaxLevel(100);
         setStatusWaste(false);
-        setMaxPrepared(10);
         setCountPrepared(0);
         setCountPrepareAmericano(0);
         setCountPrepareCappuccino(0);
         setCountPrepareEspresso(0);
-        setMenuLength(0);
     }
 
     public int getMilk() {
@@ -101,10 +98,6 @@ public class CoffeeMachine {
         return statusWaste;
     }
 
-    public int getMaxPrepared() {
-        return maxPrepared;
-    }
-
     public int getCountPrepared() {
         return countPrepared;
     }
@@ -129,14 +122,6 @@ public class CoffeeMachine {
         profiles = input;
     }
 
-    public int getMenuLength() {
-        return menuLength;
-    }
-
-    public void setMenuLength(int menuLength) {
-        this.menuLength = menuLength;
-    }
-
     public static void setLog(List<String> input) {
         log = input;
     }
@@ -153,20 +138,12 @@ public class CoffeeMachine {
         this.countPrepareCappuccino = countPrepareCappuccino;
     }
 
-    public void setMaxLevel(int vol) {
-        maxLevel = vol;
+    public void setStatusWaste(boolean volume) {
+        statusWaste = volume;
     }
 
-    public void setStatusWaste(boolean vol) {
-        statusWaste = vol;
-    }
-
-    public void setMaxPrepared(int vol) {
-        maxPrepared = vol;
-    }
-
-    public void setCountPrepared(int vol) {
-        countPrepared = vol;
+    public void setCountPrepared(int volume) {
+        countPrepared = volume;
     }
 
     public void setWater(int water) {
@@ -211,23 +188,26 @@ public class CoffeeMachine {
     }
 
     public void addWater(String ingredient) {
-        setWater(getWater() + requestConsole("\nHow much " + ingredient + " should I add?\n"));
-        addLog("Add water\n");
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setWater(getWater() + countAdded);
+        addLog("Add water " + countAdded + "\n");
     }
 
     public void addCoffee(String ingredient) {
-        setCoffee(getCoffee() + requestConsole("\nHow much " + ingredient + " should I add?\n"));
-        addLog("Add coffee\n");
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setCoffee(getCoffee() + countAdded);
+        addLog("Add coffee " + countAdded + "\n");
     }
 
     public void addMilk(String ingredient) {
-        setMilk(getMilk() + requestConsole("\nHow much " + ingredient + " should I add?\n"));
-        addLog("Add milk\n");
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setMilk(getMilk() + countAdded);
+        addLog("Add milk" + countAdded + "\n");
     }
 
     public boolean checkStatusWaste(int count) {
-        setStatusWaste(count > getMaxPrepared());
-        if (count > getMaxPrepared() && !getStatusWaste()) {
+        setStatusWaste(count > maxPrepared);
+        if (count > maxPrepared && !getStatusWaste()) {
             out.print("Ohh. So much!\n");
         } else if (getStatusWaste()) {
             out.print("Clean me! Urgently! \n");
@@ -262,7 +242,7 @@ public class CoffeeMachine {
     }
 
     public void printHealthMachine() {
-        printProgress("Count", "brews", getCountPrepared(), getMaxPrepared());
+        printProgress("Count", "brews", getCountPrepared(), maxPrepared);
         printProgress("Level", "WATER", getWater(), getMaxLevel());
         printProgress("Level", "COFFEE", getCoffee(), getMaxLevel());
         printProgress("Level", "MILK", getMilk(), getMaxLevel());
@@ -388,40 +368,24 @@ public class CoffeeMachine {
 
     public void showMenu() {
         out.print("\n");
-        out.format("+-------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
-        out.format("| System:     | Service:             | Add ingredients: | Prepare:                                                        | Show recipe:    |%n");
-        out.format("+-------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
-        String leftAlignFormat = "| %-11s | %-20s | %-16s | %-63s | %-15s |%n";
-        out.format(leftAlignFormat, "0) " + exit.text, "2) " + numberOfBrews.text, "4) " + addWater.text, "7) " + prepareCappuccino.text + " | 10) 3 Cappuccino  | 13) Any quantity Cappuccino", "16) " + showCappuccino.text);
-        out.format(leftAlignFormat, "1) " + powerOn.text, "3) " + clearMachine.text, "5) " + addCoffee.text, "8) " + prepareAmericano.text + "  | 11) 3 Americano   | 14) Any quantity Americano", "17) " + showAmericano.text);
-        out.format(leftAlignFormat, "", "", "6) " + addMilk.text, "9) " + prepareEspresso.text + "   | 12) 3 Espresso    | 15) Any quantity Espresso", "18) " + showEspresso.text);
-        out.format("+-------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
-        out.print("19) " + showLog.text + "\n");
-        out.print("20) " + createProfile.text + "\n");
-        if (getProfiles().size() > 0) {
-            int i = getMenuLength();
-            out.print("Sorts profiles:" + "\n");
-            for (Profiles item : getProfiles()) {
-                out.println(++i + ") " + item.getName());
-            }
-        }
+        out.format("+--------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
+        out.format("| System:      | Service:             | Add ingredients: | Prepare:                                                        | Show recipe:    |%n");
+        out.format("+--------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
+        String leftAlignFormat = "| %-12s | %-20s | %-16s | %-63s | %-15s |%n";
+        out.format(leftAlignFormat, "0) " + EXIT.text, "2) " + NUMBER_OF_BREWS.text, "4) " + ADD_WATER.text, "7) " + PREPARE_CAPPUCCINO.text + " | 10) 3 Cappuccino  | 13) Any quantity Cappuccino", "16) " + SHOW_CAPPUCCINO.text);
+        out.format(leftAlignFormat, "1) " + POWER_ON.text, "3) " + CLEAR_MACHINE.text, "5) " + ADD_COFFEE.text, "8) " + PREPARE_AMERICANO.text + "  | 11) 3 Americano   | 14) Any quantity Americano", "17) " + SHOW_AMERICANO.text);
+        out.format(leftAlignFormat, "19) " + SHOW_LOG.text, "20) " + PROFILES.text, "6) " + ADD_MILK.text, "9) " + PREPARE_ESPRESSO.text + "   | 12) 3 Espresso    | 15) Any quantity Espresso", "18) " + SHOW_ESPRESSO.text);
+        out.format("+--------------+----------------------+------------------+-----------------------------------------------------------------+-----------------+%n");
     }
 
     public MenuItems choiceItem() {
-        MenuItems result = null;
         MenuItems[] menu = values();
-        setMenuLength(menu.length);
-        int selectItem = requestConsole("\nEnter item number 0-" + (getMenuLength() - 1) + ": ");
-        if (selectItem < getMenuLength()) {
-            result = menu[selectItem];
-        } else if (checkStatusMachine()) {
-            runProfile(selectItem);
-        }
-        return result;
+        int selectItem = requestConsole("\nEnter item number 0-" + menuLength + ": ");
+        return menu[selectItem];
     }
 
     private void runProfile(int selectItem) {
-        Profiles selectProfile = getProfiles().get(selectItem - getMenuLength());
+        Profiles selectProfile = getProfiles().get(selectItem - menuLength);
         if (!getStatusWaste()) {
             prepareCoffee(CAPPUCCINO, selectProfile.getCountCappuccino());
             prepareCoffee(AMERICANO, selectProfile.getCountAmericano());
@@ -429,7 +393,25 @@ public class CoffeeMachine {
         }
     }
 
-    public void createProfiles() {
+    public void menuProfile() {
+        int countItem = 0;
+        out.print(countItem++ + ") Back to menu" + "\n");
+        out.print(countItem++ + ") Create profiles" + "\n");
+        if (getProfiles().size() > 0) {
+            out.print("Sorts profiles:" + "\n");
+            for (Profiles item : getProfiles()) {
+                out.println(++countItem + ") " + item.getName());
+            }
+        }
+        var selectItem = requestConsole("\nEnter item number 0-" + countItem + ": ");
+//        switch (selectItem) {
+//            0 ->break;
+//            1 ->profiles();
+//            default -> out.print("Error.\n");
+//        }
+    }
+
+    private void profiles() {
         if (checkStatusMachine()) {
             Profiles profile = new Profiles();
             String input = null;
@@ -456,7 +438,7 @@ public class CoffeeMachine {
                     ESPRESSO.countCoffee * countAmericano + CAPPUCCINO.countCoffee * countAmericano;
             int count = countWater + countMilk + countCoffee;
             if (checkIngredients(getMaxLevel() - countWater, getMaxLevel() - countMilk,
-                    getMaxLevel() - countCoffee) && getMaxPrepared() < count) {
+                    getMaxLevel() - countCoffee) && maxPrepared < count) {
                 List<Profiles> currentProfiles = getProfiles();
                 currentProfiles.add(profile);
                 setProfiles(currentProfiles);

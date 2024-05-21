@@ -22,6 +22,7 @@ public enum MenuItems {
     SHOW_ESPRESSO("Espresso"),
     SHOW_LOG("Show log"),
     PROFILES("Profiles");
+
     public final String text;
 
     MenuItems(String text) {

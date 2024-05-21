@@ -10,7 +10,6 @@ import static org.example.task2.Recipes.CAPPUCCINO;
 import static org.example.task2.Recipes.ESPRESSO;
 
 public class Task2 {
-    @SuppressWarnings("checkstyle:CyclomaticComplexity")
     public static void main(String[] args) {
         CoffeeMachine coffeeMachine = new CoffeeMachine();
         var count = 1;
@@ -22,7 +21,7 @@ public class Task2 {
             coffeeMachine.showMenu();
             event = coffeeMachine.choiceItem();
             if (event == PREPARE_ANY_CAPPUCCINO || event == PREPARE_ANY_ESPRESSO || event == PREPARE_ANY_AMERICANO) {
-                count = coffeeMachine.countRequest();
+                count = coffeeMachine.requestConsole("\nEnter required number of units: ");
             }
             switch (event) {
                 case EXIT -> exit(0);
@@ -40,7 +39,7 @@ public class Task2 {
                 case SHOW_CAPPUCCINO -> coffeeMachine.printRecipe(CAPPUCCINO);
                 case SHOW_AMERICANO -> coffeeMachine.printRecipe(AMERICANO);
                 case SHOW_ESPRESSO -> coffeeMachine.printRecipe(ESPRESSO);
-                case SHOW_LOG -> coffeeMachine.showLogPrepare();
+                case SHOW_LOG -> coffeeMachine.printLog();
                 case POWER_ON -> coffeeMachine.setStatus(!coffeeMachine.getStatus());
                 case PROFILES -> coffeeMachine.menuProfile();
                 default -> out.println("Oops, something wrong!");

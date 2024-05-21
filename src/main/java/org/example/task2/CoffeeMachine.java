@@ -105,6 +105,10 @@ public class CoffeeMachine {
         return profiles;
     }
 
+    public static List<String> getLog() {
+        return log;
+    }
+
     public static void setLog(List<String> input) {
         log = input;
     }
@@ -170,66 +174,6 @@ public class CoffeeMachine {
         addLog("Power " + s);
     }
 
-    private static void addLog(String s) {
-        List<String> log = getLog();
-        log.add(s);
-        setLog(log);
-    }
-
-    public void addWater(String ingredient) {
-        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
-        setWater(getWater() + countAdded);
-        addLog("Add water " + countAdded + "\n");
-    }
-
-    public void addCoffee(String ingredient) {
-        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
-        setCoffee(getCoffee() + countAdded);
-        addLog("Add coffee " + countAdded + "\n");
-    }
-
-    public void addMilk(String ingredient) {
-        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
-        setMilk(getMilk() + countAdded);
-        addLog("Add milk " + countAdded + "\n");
-    }
-
-    public void clearMachine() {
-        if (getCountPrepared() > 2 && getCountPrepared() < maxPrepared) {
-            out.print("Cleaning completed. \n");
-            setCountPrepared(0);
-            addLog("Cleaning completed. \n");
-        } else if (getCountPrepared() == 0) {
-            out.print("No cleaning needed. \n");
-        }
-    }
-
-    public void printHealthMachine() {
-        printProgress("Count", "brews", getCountPrepared(), maxPrepared);
-        printProgress("Level", "WATER", getWater(), maxLevel);
-        printProgress("Level", "COFFEE", getCoffee(), maxLevel);
-        printProgress("Level", "MILK", getMilk(), maxLevel);
-    }
-
-    private void printProgress(String s, String input, int currentLevel, int maxLevel) {
-        out.printf(s + " \t" + input + " \t- \t%d (max %d units)\t: \t[", currentLevel, maxLevel);
-        for (int i = 0; i < maxLevel; i++) {
-            if (i < currentLevel) {
-                out.print("*");
-            } else {
-                out.print("_");
-            }
-        }
-        out.print("]\n");
-    }
-
-    public boolean checkStatusMachine() {
-        if (!powerStatus) {
-            out.print("Error. You need to turn on the coffee machine\n");
-        }
-        return powerStatus;
-    }
-
     public int requestConsole(String s) {
         int count;
         String input = "";
@@ -253,84 +197,30 @@ public class CoffeeMachine {
         return count;
     }
 
-    public int countRequest() {
-        return requestConsole("\nEnter required number of units: ");
-    }
-
-    private boolean checkIngredients(int setWater, int setCoffee, int setMilk) {
-        boolean enoughWater = true;
-        boolean enoughCoffee = true;
-        boolean enoughMilk = true;
-        if (setWater < 0) {
-            enoughWater = false;
-            out.print("\tNot enough WATER\n");
-        }
-        if (setCoffee < 0) {
-            enoughCoffee = false;
-            out.print("\tNot enough COFFEE\n");
-        }
-        if (setMilk < 0) {
-            enoughMilk = false;
-            out.print("\ttNot enough MILK\n");
-        }
-        if (enoughCoffee && enoughMilk && enoughWater) {
-            setWater(setWater);
-            setCoffee(setCoffee);
-            setMilk(setMilk);
-        }
-        return enoughCoffee && enoughMilk && enoughWater;
-    }
-
-    public void prepareCoffee(Recipes recipes, int count) {
-        if (checkStatusMachine() && (getCountPrepared() + count) <= maxPrepared) {
-            var water = getWater() - recipes.countWater * count;
-            var milk = getMilk() - recipes.countMilk * count;
-            var coffee = getCoffee() - recipes.countCoffee * count;
-            if (checkIngredients(water, milk, coffee)) {
-                switch (recipes) {
-                    case ESPRESSO -> setCountPrepareEspresso(getCountPrepareEspresso() + count);
-                    case CAPPUCCINO -> setCountPrepareCappuccino(getCountPrepareCappuccino() + count);
-                    case AMERICANO -> setCountPrepareAmericano(getCountPrepareAmericano() + count);
-                    default -> out.println("Prepare " + count + " portion(s)\n");
-                }
-                addLog("Prepare " + count + " portion(s)\n");
-                out.printf("\n\tSuccessful. Portion(s) %d servings of " + recipes + "\n", count);
-                setCountPrepared(getCountPrepared() + count);
-            }
-        } else if ((getCountPrepared() + count) >= maxPrepared) {
-            out.print("Needs cleaning. Urgently!\n");
-        }
-    }
-
-    public void printCountPrepared() {
-        if (checkStatusMachine()) {
-            out.print("Number of brews " + countPrepared + "\n");
-            out.printf("Prepare: %d-cappuccino, %d-americano, %d-espresso\n",
-                    getCountPrepareCappuccino(), getCountPrepareAmericano(), getCountPrepareEspresso());
-            addLog("Number of brews " + countPrepared + "\n");
-            if (getCountPrepared() > 2 && getCountPrepared() < maxPrepared) {
-                out.print("Can be cleaned \n");
-            }
-        }
-    }
-
-    public void showLogPrepare() {
-        List<String> list = getLog();
-        out.print("\n\n");
-        for (String item : list) {
-            out.print(item);
-        }
-        out.printf("Prepare: %d-cappuccino, %d-americano, %d-espresso\n",
-                getCountPrepareCappuccino(), getCountPrepareAmericano(), getCountPrepareEspresso());
-    }
-
-    public void printRecipe(Recipes recipe) {
-        if (getStatus()) {
-            out.printf("\n" + recipe.text + "\n");
-            addLog("Show recipe for " + recipe.toString().toLowerCase() + "\n");
-        } else {
+    public boolean checkStatusMachine() {
+        if (!powerStatus) {
             out.print("Error. You need to turn on the coffee machine\n");
         }
+        return powerStatus;
+    }
+
+    public void printHealthMachine() {
+        printProgress("Count", "brews", getCountPrepared(), maxPrepared);
+        printProgress("Level", "WATER", getWater(), maxLevel);
+        printProgress("Level", "COFFEE", getCoffee(), maxLevel);
+        printProgress("Level", "MILK", getMilk(), maxLevel);
+    }
+
+    private void printProgress(String s, String input, int currentLevel, int maxLevel) {
+        out.printf(s + " \t" + input + " \t- \t%d (max %d units)\t: \t[", currentLevel, maxLevel);
+        for (int i = 0; i < maxLevel; i++) {
+            if (i < currentLevel) {
+                out.print("*");
+            } else {
+                out.print("_");
+            }
+        }
+        out.print("]\n");
     }
 
     public void showMenu() {
@@ -365,12 +255,113 @@ public class CoffeeMachine {
         return menu[selectItem];
     }
 
-    private void runProfile(int selectItem) {
-        Profiles selectProfile = getProfiles().get(selectItem);
-        if (getCountPrepared() < maxPrepared) {
-            prepareCoffee(CAPPUCCINO, selectProfile.getCountCappuccino());
-            prepareCoffee(AMERICANO, selectProfile.getCountAmericano());
-            prepareCoffee(ESPRESSO, selectProfile.getCountEspresso());
+    private void addLog(String s) {
+        List<String> log = getLog();
+        log.add(s);
+        setLog(log);
+    }
+
+    public void printLog() {
+        List<String> list = getLog();
+        out.print("\n\n");
+        for (String item : list) {
+            out.print(item);
+        }
+        out.printf("Prepare: %d-cappuccino, %d-americano, %d-espresso\n",
+                getCountPrepareCappuccino(), getCountPrepareAmericano(), getCountPrepareEspresso());
+    }
+
+    public void addWater(String ingredient) {
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setWater(getWater() + countAdded);
+        addLog("Add water " + countAdded + "\n");
+    }
+
+    public void addCoffee(String ingredient) {
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setCoffee(getCoffee() + countAdded);
+        addLog("Add coffee " + countAdded + "\n");
+    }
+
+    public void addMilk(String ingredient) {
+        int countAdded = requestConsole("\nHow much " + ingredient + " should I add?\n");
+        setMilk(getMilk() + countAdded);
+        addLog("Add milk " + countAdded + "\n");
+    }
+
+    public void clearMachine() {
+        if (getCountPrepared() > 2 && getCountPrepared() < maxPrepared) {
+            out.print("Cleaning completed. \n");
+            setCountPrepared(0);
+            addLog("Cleaning completed. \n");
+        } else if (getCountPrepared() == 0) {
+            out.print("No cleaning needed. \n");
+        }
+    }
+
+    public void prepareCoffee(Recipes recipes, int count) {
+        if (checkStatusMachine() && (getCountPrepared() + count) <= maxPrepared) {
+            var water = getWater() - recipes.countWater * count;
+            var milk = getMilk() - recipes.countMilk * count;
+            var coffee = getCoffee() - recipes.countCoffee * count;
+            if (checkIngredients(water, milk, coffee)) {
+                switch (recipes) {
+                    case ESPRESSO -> setCountPrepareEspresso(getCountPrepareEspresso() + count);
+                    case CAPPUCCINO -> setCountPrepareCappuccino(getCountPrepareCappuccino() + count);
+                    case AMERICANO -> setCountPrepareAmericano(getCountPrepareAmericano() + count);
+                    default -> out.println("Prepare " + count + " portion(s)\n");
+                }
+                addLog("Prepare " + count + " portion(s)\n");
+                out.printf("\n\tSuccessful. Portion(s) %d servings of " + recipes + "\n", count);
+                setCountPrepared(getCountPrepared() + count);
+            }
+        } else if ((getCountPrepared() + count) >= maxPrepared) {
+            out.print("Needs cleaning. Urgently!\n");
+        }
+    }
+
+    private boolean checkIngredients(int setWater, int setCoffee, int setMilk) {
+        boolean enoughWater = true;
+        boolean enoughCoffee = true;
+        boolean enoughMilk = true;
+        if (setWater < 0) {
+            enoughWater = false;
+            out.print("\tNot enough WATER\n");
+        }
+        if (setCoffee < 0) {
+            enoughCoffee = false;
+            out.print("\tNot enough COFFEE\n");
+        }
+        if (setMilk < 0) {
+            enoughMilk = false;
+            out.print("\ttNot enough MILK\n");
+        }
+        if (enoughCoffee && enoughMilk && enoughWater) {
+            setWater(setWater);
+            setCoffee(setCoffee);
+            setMilk(setMilk);
+        }
+        return enoughCoffee && enoughMilk && enoughWater;
+    }
+
+    public void printCountPrepared() {
+        if (checkStatusMachine()) {
+            out.print("Number of brews " + countPrepared + "\n");
+            out.printf("Prepare: %d-cappuccino, %d-americano, %d-espresso\n",
+                    getCountPrepareCappuccino(), getCountPrepareAmericano(), getCountPrepareEspresso());
+            addLog("Number of brews " + countPrepared + "\n");
+            if (getCountPrepared() > 2 && getCountPrepared() < maxPrepared) {
+                out.print("Can be cleaned \n");
+            }
+        }
+    }
+
+    public void printRecipe(Recipes recipe) {
+        if (getStatus()) {
+            out.printf("\n" + recipe.text + "\n");
+            addLog("Show recipe for " + recipe.toString().toLowerCase() + "\n");
+        } else {
+            out.print("Error. You need to turn on the coffee machine\n");
         }
     }
 
@@ -396,13 +387,13 @@ public class CoffeeMachine {
 
             switch (selectItem) {
                 case 0 -> out.print("Back to main menu\n");
-                case 1 -> profiles();
+                case 1 -> printProfiles();
                 default -> runProfile(selectItem - 2);
             }
         }
     }
 
-    private void profiles() {
+    private void printProfiles() {
         if (checkStatusMachine()) {
             Profiles profile = new Profiles();
             String input = null;
@@ -439,8 +430,13 @@ public class CoffeeMachine {
         }
     }
 
-    public static List<String> getLog() {
-        return log;
+    private void runProfile(int selectItem) {
+        Profiles selectProfile = getProfiles().get(selectItem);
+        if (getCountPrepared() < maxPrepared) {
+            prepareCoffee(CAPPUCCINO, selectProfile.getCountCappuccino());
+            prepareCoffee(AMERICANO, selectProfile.getCountAmericano());
+            prepareCoffee(ESPRESSO, selectProfile.getCountEspresso());
+        }
     }
 }
 

@@ -383,7 +383,10 @@ public class CoffeeMachine {
             if (!getProfiles().isEmpty()) {
                 out.print("Sorts profiles:" + "\n");
                 for (Profiles item : getProfiles()) {
-                    out.println(countItem++ + ") " + item.getName());
+                    out.println(countItem++ + ") " + item.getName() +
+                            ": Americano - " + item.getCountAmericano() +
+                            " Cappuccino - " + item.getCountCappuccino() +
+                            " Espresso - " + item.getCountEspresso());
                 }
             }
             int selectItem;
